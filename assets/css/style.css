@@ -719,31 +719,32 @@ a {
 }
 
 .bonus-card-img-wrap {
-  flex: 0 0 42%;
-  max-width: 42%;
+  flex: 0 0 46%;
+  max-width: 46%;
   background: #f8fafc;
-  padding: 24px;
+  padding: 8px;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
-  min-height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
+  overflow: hidden;
 }
 
 .bonus-card-img-wrap img {
-  max-height: 280px;
+  width: 100%;
   max-width: 100%;
-  width: auto;
+  max-height: 380px;
   height: auto;
   object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.25s ease;
 }
 
 .bonus-card:hover .bonus-card-img-wrap img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .bonus-card-body {
@@ -763,35 +764,35 @@ a {
   display: inline-block;
   padding: 3px 14px;
   border-radius: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   align-self: flex-start;
   letter-spacing: 0.5px;
 }
 
 .bonus-card-title {
   font-family: var(--font-heading);
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   color: #0f172a;
   line-height: 1.3;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .bonus-card-value {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-primary-red);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .bonus-card-desc {
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   color: #334155;
-  line-height: 1.6;
-  margin-bottom: 16px;
+  line-height: 1.55;
+  margin-bottom: 12px;
 }
 
 .bonus-card-desc p {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .bonus-card-desc p:last-child {
@@ -799,12 +800,12 @@ a {
 }
 
 .bonus-highlight-box {
-  padding: 14px 18px;
+  padding: 12px 16px;
   background-color: #f0fdf4;
   border: 2px dashed #10b981;
   border-radius: 12px;
-  font-size: 1.05rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.48;
   color: #065f46;
 }
 
@@ -1519,17 +1520,17 @@ a {
 @media (max-width: 991px) {
   .bonus-card {
     flex-direction: column;
-    padding: 28px 24px;
-    gap: 24px;
+    padding: 24px 20px;
+    gap: 20px;
   }
   .bonus-card-img-wrap {
     flex: 0 0 100%;
     max-width: 100%;
     width: 100%;
-    min-height: 240px;
+    padding: 8px;
   }
   .bonus-card-img-wrap img {
-    max-height: 240px;
+    max-height: 280px;
   }
   .bonus-card-title {
     font-size: 1.55rem;
@@ -1595,11 +1596,10 @@ a {
     flex: 0 0 100%;
     max-width: 100%;
     width: 100%;
-    min-height: 200px;
-    padding: 16px;
+    padding: 6px;
   }
   .bonus-card-img-wrap img {
-    max-height: 220px;
+    max-height: 260px;
   }
   .bonus-card-title {
     font-size: 1.35rem;
