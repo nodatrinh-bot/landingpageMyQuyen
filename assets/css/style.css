@@ -725,8 +725,10 @@ a {
 
 .bonus-card-img-wrap img {
   max-height: 190px;
+  max-width: 100%;
   width: auto;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   border-radius: 12px;
   border: 2px solid #e2e8f0;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
