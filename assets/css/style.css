@@ -410,8 +410,8 @@ a {
 .pain-card {
   background: #fafafa;
   border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 14px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
   transition: all 0.25s ease;
@@ -424,13 +424,15 @@ a {
 }
 
 .pain-icon {
-  font-size: 2.2rem;
-  margin-bottom: 12px;
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  text-align: center;
+  display: block;
 }
 
 .pain-text {
-  font-size: 1.05rem;
-  line-height: 1.5;
+  font-size: 1.25rem;
+  line-height: 1.6;
   color: #374151;
 }
 
@@ -695,6 +697,12 @@ a {
   margin-bottom: 40px;
 }
 
+@media (min-width: 992px) {
+  .bonus-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .bonus-card {
   background: #ffffff;
   border: 2px solid #e2e8f0;
@@ -763,25 +771,44 @@ a {
 
 .bonus-card-title {
   font-family: var(--font-heading);
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   color: #111827;
-  line-height: 1.3;
+  line-height: 1.35;
   margin-bottom: 10px;
 }
 
 .bonus-card-value {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-primary-red);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .bonus-card-desc {
-  font-size: 1rem;
-  color: #4b5563;
-  line-height: 1.5;
-  margin-bottom: 16px;
+  font-size: 1.15rem;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 18px;
   flex: 1;
+}
+
+.bonus-card-desc p {
+  margin-bottom: 12px;
+}
+
+.bonus-card-desc p:last-child {
+  margin-bottom: 0;
+}
+
+.bonus-highlight-box {
+  margin-top: auto;
+  padding: 14px 16px;
+  background-color: #f0fdf4;
+  border: 2px dashed #10b981;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #065f46;
 }
 
 .bonus-free-badge {
