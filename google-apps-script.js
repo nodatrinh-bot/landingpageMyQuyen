@@ -18,9 +18,30 @@
  * ============================================================================
  */
 
+// ID BẢNG TÍNH GOOGLE SHEET CỦA BẠN (Đã lấy trực tiếp từ bảng tính của bạn):
+var SPREADSHEET_ID = "17IvfTMQieDCLd67k3vfjeKCZEjYnmc0wLaNgSnx3v1Y";
+
+function doGet(e) {
+  return ContentService.createTextOutput(JSON.stringify({ 
+    status: "ready", 
+    message: "Hệ thống Webhook Google Sheet Ngô Mỹ Quyên đã sẵn sàng nhận dữ liệu!" 
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss;
+    try {
+      ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (e1) {
+      ss = SpreadsheetApp.getActiveSpreadsheet();
+    }
+    
+    if (!ss) {
+      throw new Error("Không thể mở Google Sheet. Vui lòng kiểm tra lại SPREADSHEET_ID!");
+    }
+    
+    var sheet = ss.getSheetByName("Trang tính1") || ss.getActiveSheet();
     
     // Tự động tạo hàng tiêu đề nếu trang tính còn mới tinh
     if (sheet.getLastRow() === 0) {
