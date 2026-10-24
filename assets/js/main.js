@@ -252,15 +252,18 @@ Ban Tổ Chức Thử Thách Affiliate Ngô Mỹ Quyên`;
     // 2. Đồng bộ phụ sang Google Apps Script (ghi nhận Google Sheets)
     if (GOOGLE_SCRIPT_WEBHOOK_URL) {
       try {
-        const formData = new FormData();
-        formData.append('fullname', fullname);
-        formData.append('phone', phone);
-        formData.append('email', email);
+        const params = new URLSearchParams();
+        params.append('fullname', fullname);
+        params.append('phone', phone);
+        params.append('email', email);
 
         fetch(GOOGLE_SCRIPT_WEBHOOK_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: formData
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params.toString()
         }).catch(function (e) {
           console.warn('Apps Script background sync:', e);
         });
