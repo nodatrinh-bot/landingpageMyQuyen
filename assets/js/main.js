@@ -159,10 +159,10 @@ function initSocialProof() {
 }
 
 /* ==========================================================================
-   4. FORM SUBMISSION (TÍCH HỢP GOOGLE SHEET & GỬI GMAIL TỰ ĐỘNG)
+   4. FORM SUBMISSION (TÍCH HỢP GỬI EMAIL VỀ nodatrinh@gmail.com & GOOGLE SHEET)
    ========================================================================== */
-// URL Webhook Google Apps Script (Dán link Web App của bạn vào đây):
-const GOOGLE_SCRIPT_WEBHOOK_URL = window.GOOGLE_SCRIPT_WEBHOOK_URL || '';
+const OWNER_EMAIL = 'nodatrinh@gmail.com';
+const GOOGLE_SCRIPT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxXHi-6mvF3Fn2RPvxCkvo1xsfMRaG5PwNE7xqISbwbuYu2OssEqzgBL1qMEmdFlG7r/exec';
 
 function initFormSubmission() {
   const form = document.getElementById('leadForm');
@@ -210,30 +210,75 @@ function initFormSubmission() {
       console.error('Error saving lead:', err);
     }
 
-    // Gửi dữ liệu về Google Sheets & Tự động phát lệnh gửi Gmail
-    if (GOOGLE_SCRIPT_WEBHOOK_URL) {
-      const formData = new FormData();
-      formData.append('fullname', fullname);
-      formData.append('phone', phone);
-      formData.append('email', email);
+    // Email tự động gửi cho học viên
+    const studentAutoMessage = `Chào ${fullname},
 
-      fetch(GOOGLE_SCRIPT_WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
+Chúc mừng bạn đã đăng ký thành công THỬ THÁCH 2 NGÀY: AFFILIATE TỰ ĐỘNG cùng chuyên gia Ngô Mỹ Quyên!
+
+Vé VIP và trọn bộ quà tặng trị giá 125.970.000 VNĐ của bạn đã được giữ chỗ an toàn.
+
+THÔNG TIN LỚP HỌC:
+- Lịch học: 20h00 - 22h30 (Thứ 7 & Chủ Nhật)
+- Hình thức: Trực tiếp qua Zoom VIP
+- Giảng viên: Chuyên gia Ngô Mỹ Quyên
+
+BƯỚC QUAN TRỌNG:
+Hãy bấm vào đường link nhóm Zalo VIP bên dưới ngay để nhận mã phòng Zoom và tài liệu học:
+👉 https://zalo.me/g/urqmrurj94o3y9yazfsc
+
+Hẹn gặp bạn trong buổi học bùng nổ sắp tới!
+---
+Ban Tổ Chức Thử Thách Affiliate Ngô Mỹ Quyên`;
+
+    // 1. Gửi email thông báo về OWNER_EMAIL (nodatrinh@gmail.com) & tự động gửi autoresponse cho học viên
+    const formSubmitPromise = fetch(`https://formsubmit.co/ajax/${OWNER_EMAIL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        fullname: fullname,
+        phone: phone,
+        email: email,
+        _subject: `🔥 [ĐĂNG KÝ MỚI] ${fullname} (${phone}) vừa nhận vé Thử Thách!`,
+        _replyto: email,
+        _captcha: 'false',
+        _template: 'table',
+        _autoresponse: studentAutoMessage
       })
-      .then(() => {
+    });
+
+    // 2. Đồng bộ phụ sang Google Apps Script (ghi nhận Google Sheets)
+    if (GOOGLE_SCRIPT_WEBHOOK_URL) {
+      try {
+        const formData = new FormData();
+        formData.append('fullname', fullname);
+        formData.append('phone', phone);
+        formData.append('email', email);
+
+        fetch(GOOGLE_SCRIPT_WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        }).catch(function (e) {
+          console.warn('Apps Script background sync:', e);
+        });
+      } catch (err) {
+        console.warn('Apps script trigger error:', err);
+      }
+    }
+
+    // Đảm bảo người dùng được chuyển hướng an toàn đến trang Cảm Ơn
+    const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 2500));
+
+    Promise.race([formSubmitPromise, timeoutPromise])
+      .then(function () {
         window.location.href = 'thank-you.html';
       })
-      .catch((err) => {
-        console.warn('Webhook sync fallback:', err);
+      .catch(function () {
         window.location.href = 'thank-you.html';
       });
-    } else {
-      setTimeout(() => {
-        window.location.href = 'thank-you.html';
-      }, 800);
-    }
   });
 }
 
