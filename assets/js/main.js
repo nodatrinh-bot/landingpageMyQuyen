@@ -159,8 +159,11 @@ function initSocialProof() {
 }
 
 /* ==========================================================================
-   4. FORM SUBMISSION
+   4. FORM SUBMISSION (TÍCH HỢP GOOGLE SHEET & GỬI GMAIL TỰ ĐỘNG)
    ========================================================================== */
+// URL Webhook Google Apps Script (Dán link Web App của bạn vào đây):
+const GOOGLE_SCRIPT_WEBHOOK_URL = window.GOOGLE_SCRIPT_WEBHOOK_URL || '';
+
 function initFormSubmission() {
   const form = document.getElementById('leadForm');
   if (!form) return;
@@ -187,10 +190,10 @@ function initFormSubmission() {
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'ĐANG XỬ LÝ ĐĂNG KÝ...';
+      submitBtn.textContent = 'ĐANG XỬ LÝ & GỬI VÉ VỀ GMAIL...';
     }
 
-    // Save lead locally
+    // Save lead locally (bộ nhớ dự phòng)
     const lead = {
       fullname,
       phone,
@@ -207,10 +210,30 @@ function initFormSubmission() {
       console.error('Error saving lead:', err);
     }
 
-    // Redirect to Thank-you page after brief loading delay
-    setTimeout(() => {
-      window.location.href = 'thank-you.html';
-    }, 800);
+    // Gửi dữ liệu về Google Sheets & Tự động phát lệnh gửi Gmail
+    if (GOOGLE_SCRIPT_WEBHOOK_URL) {
+      const formData = new FormData();
+      formData.append('fullname', fullname);
+      formData.append('phone', phone);
+      formData.append('email', email);
+
+      fetch(GOOGLE_SCRIPT_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      })
+      .then(() => {
+        window.location.href = 'thank-you.html';
+      })
+      .catch((err) => {
+        console.warn('Webhook sync fallback:', err);
+        window.location.href = 'thank-you.html';
+      });
+    } else {
+      setTimeout(() => {
+        window.location.href = 'thank-you.html';
+      }, 800);
+    }
   });
 }
 
